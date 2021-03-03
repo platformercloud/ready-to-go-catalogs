@@ -1,0 +1,11 @@
+defaultValueArray:
+- path: persistentVolume.enable
+  value: false
+  description: ''
+  clusterResources: ''
+  regex: []
+- path: persistentVolume.storage
+  value: 1Gi
+  description: ''
+  clusterResources: ''
+  regex: []
