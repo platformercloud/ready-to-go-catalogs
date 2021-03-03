@@ -234,8 +234,8 @@ extraContainerVolumes: []
 ##
 persistence:
   type: pvc
-  enabled: true
-  storageClassName: default
+  enabled: false
+  # storageClassName: default
   accessModes:
     - ReadWriteOnce
   size: 10Gi
@@ -285,13 +285,135 @@ initChownData:
 
 # Administrator credentials when not using an existing secret (see below)
 adminUser: admin
-adminPassword: strongpassword
+# adminPassword: strongpassword
 
+# Use an existing secret for the admin user.
+admin:
+  existingSecret: ""
+  userKey: admin-user
+  passwordKey: admin-password
+
+## Define command to be executed at startup by grafana container
+## Needed if using `vault-env` to manage secrets (ref: https://banzaicloud.com/blog/inject-secrets-into-pods-vault/)
+## Default is "run.sh" as defined in grafana's Dockerfile
+# command:
+# - "sh"
+# - "/run.sh"
+
+## Use an alternate scheduler, e.g. "stork".
+## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
 ##
-plugins:
-  - digrich-bubblechart-panel
-  - grafana-clock-panel
+# schedulerName:
 
+## Extra environment variables that will be pass onto deployment pods
+##
+## to provide grafana with access to CloudWatch on AWS EKS:
+## 1. create an iam role of type "Web identity" with provider oidc.eks.* (note the provider for later)
+## 2. edit the "Trust relationships" of the role, add a line inside the StringEquals clause using the
+## same oidc eks provider as noted before (same as the existing line)
+## also, replace NAMESPACE and prometheus-operator-grafana with the service account namespace and name
+##
+##  "oidc.eks.us-east-1.amazonaws.com/id/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:sub": "system:serviceaccount:NAMESPACE:prometheus-operator-grafana",
+##
+## 3. attach a policy to the role, you can use a built in policy called CloudWatchReadOnlyAccess
+## 4. use the following env: (replace 123456789000 and iam-role-name-here with your aws account number and role name)
+##
+## env:
+##   AWS_ROLE_ARN: arn:aws:iam::123456789000:role/iam-role-name-here
+##   AWS_WEB_IDENTITY_TOKEN_FILE: /var/run/secrets/eks.amazonaws.com/serviceaccount/token
+##   AWS_REGION: us-east-1
+##
+## 5. uncomment the EKS section in extraSecretMounts: below
+## 6. uncomment the annotation section in the serviceAccount: above
+## make sure to replace arn:aws:iam::123456789000:role/iam-role-name-here with your role arn
+
+env: {}
+
+## "valueFrom" environment variable references that will be added to deployment pods
+## ref: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.17/#envvarsource-v1-core
+## Renders in container spec as:
+##   env:
+##     ...
+##     - name: <key>
+##       valueFrom:
+##         <value rendered as YAML>
+envValueFrom: {}
+
+## The name of a secret in the same kubernetes namespace which contain values to be added to the environment
+## This can be useful for auth tokens, etc. Value is templated.
+envFromSecret: ""
+
+## Sensible environment variables that will be rendered as new secret object
+## This can be useful for auth tokens, etc
+envRenderSecret: {}
+
+## Additional grafana server secret mounts
+# Defines additional mounts with secrets. Secrets must be manually created in the namespace.
+extraSecretMounts: []
+  # - name: secret-files
+  #   mountPath: /etc/secrets
+  #   secretName: grafana-secret-files
+  #   readOnly: true
+  #   subPath: ""
+  #
+  # for AWS EKS (cloudwatch) use the following (see also instruction in env: above)
+  # - name: aws-iam-token
+  #   mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+  #   readOnly: true
+  #   projected:
+  #     defaultMode: 420
+  #     sources:
+  #       - serviceAccountToken:
+  #           audience: sts.amazonaws.com
+  #           expirationSeconds: 86400
+  #           path: token
+  #
+  # for CSI e.g. Azure Key Vault use the following
+  # - name: secrets-store-inline
+  #  mountPath: /run/secrets
+  #  readOnly: true
+  #  csi:
+  #    driver: secrets-store.csi.k8s.io
+  #    readOnly: true
+  #    volumeAttributes:
+  #      secretProviderClass: "akv-grafana-spc"
+  #    nodePublishSecretRef:                       # Only required when using service principal mode
+  #       name: grafana-akv-creds                  # Only required when using service principal mode
+
+## Additional grafana server volume mounts
+# Defines additional volume mounts.
+extraVolumeMounts: []
+  # - name: extra-volume
+  #   mountPath: /mnt/volume
+  #   readOnly: true
+  #   existingClaim: volume-claim
+
+## Pass the plugins you want installed as a list.
+##
+plugins: []
+  # - digrich-bubblechart-panel
+  # - grafana-clock-panel
+
+## Configure grafana datasources
+## ref: http://docs.grafana.org/administration/provisioning/#datasources
+##
+datasources: {}
+#  datasources.yaml:
+#    apiVersion: 1
+#    datasources:
+#    - name: Prometheus
+#      type: prometheus
+#      url: http://prometheus-prometheus-server
+#      access: proxy
+#      isDefault: true
+#    - name: CloudWatch
+#        type: cloudwatch
+#        access: proxy
+#        uid: cloudwatch
+#        editable: false
+#        jsonData:
+#          authType: credentials
+#          defaultRegion: us-east-1
 
 ## Configure notifiers
 ## ref: http://docs.grafana.org/administration/provisioning/#alert-notification-channels
@@ -565,4 +687,3 @@ imageRenderer:
 #   requests:
 #     cpu: 50m
 #     memory: 50Mi
-
