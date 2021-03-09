@@ -2,13 +2,13 @@
 
 ## Getting started
 #### file structure
-    .
+    
     ├──  repository name            
-    │  ├──   versions             #   version of the chart
-    │     ├── flavorname-config.yaml  #default values  for template flavor values
-    │     ├── flavorname-readme.md    #specfic readme file per flavor
-    │     ├── flavorname-values.yaml  #values per flavor
-        ├──    metadata.yaml            #   metadata for the template
+    │ ├──   versions             #   version of the chart
+    │    ├── flavorname-config.yaml  #default values  for template flavor values
+    │    ├── flavorname-readme.md    #specfic readme file per flavor
+    │    ├── flavorname-values.yaml  #values per flavor
+      ├──    metadata.yaml            #metadata for the template
 #### metadata.yaml
 
 ```
@@ -40,5 +40,5 @@ defaultValueArray:
 | path | YAML OR JSON PATH FOR THE VARIABLE | string | required
 | value | VALUE FOR THE VARIABLE | string,boolean,array,integer | required
 | description | SMALL DESCRIPTION FOR DEFAULT VALUE | text | optional
-| cluster_resources |  SPECIAL CLUSTER RESOURCES | string | optional
+| clusterResources |  SPECIAL CLUSTER RESOURCES | string | optional
 | regex | IF YOU HAVE SPECIAL REGEXS | array | optional
