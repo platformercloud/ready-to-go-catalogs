@@ -1,0 +1,5 @@
+repositoryName: bitnami
+repository: https://charts.bitnami.com/bitnami
+chartName: mysql
+logoImage: https://artifacthub.io/image/cb7979da-c9a4-4e43-99ce-09cd714f357f
+description: Single Node MySQL
