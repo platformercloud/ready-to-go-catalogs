@@ -19,6 +19,7 @@ defaultValueArray:
   description: Custom Database password
   clusterResources: ''
   regex: []
+
 - path: global.storageClass
   value: ''
   description: MySQL Persistent Storage Disk
