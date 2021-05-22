@@ -1,0 +1,5 @@
+repositoryName: nginx-stable
+repository: https://helm.nginx.com/stable
+chartName: nginx
+logoImage: https://artifacthub.io/image/62c16f84-a100-4147-9577-4b1133ce2ab4
+description: Platformer curated chart for NGINX Ingress

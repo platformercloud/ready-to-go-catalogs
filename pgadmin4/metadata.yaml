@@ -1,0 +1,5 @@
+repositoryName: runix
+repository: https://helm.runix.net
+chartName: pgadmin4
+logoImage: https://artifacthub.io/image/61ef8ba4-4c21-438e-a0a2-e35628f1e193
+description: pgadmin4 is used to manage PostgreSQL servers
