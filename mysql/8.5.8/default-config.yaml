@@ -1,0 +1,36 @@
+defaultValueArray:
+- path: auth.rootPassword
+  value: ''
+  description: 'Root Password for MySQL'
+  clusterResources: ''
+  regex: []
+- path: auth.database
+  value: 'my_database'
+  description: 'Custom Database for MySQL'
+  clusterResources: ''
+  regex: []
+- path: auth.username
+  value: username
+  description: Custom Database user
+  clusterResources: ''
+  regex: []
+- path: auth.password
+  value: myPassword
+  description: Custom Database password
+  clusterResources: ''
+  regex: []
+- path: persistence.storageClass
+  value: ''
+  description: MySQL Persistent Storage Disk
+  clusterResources: 'k8s-storage-class'
+  regex: []
+- path: persistence.size
+  value: '10Gi'
+  description: MySQL Storage Disk Size
+  clusterResources: ''
+  regex: []
+- path: metrics.enabled
+  value: false
+  description: Enable Prometheus Metrics
+  clusterResources: ''
+  regex: []
