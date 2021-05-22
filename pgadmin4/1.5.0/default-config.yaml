@@ -1,0 +1,21 @@
+defaultValueArray:
+- path: env.email
+  value: pguser@example.local
+  description: 'Root Username for pgadmin'
+  clusterResources: ''
+  regex: []
+- path: env.password
+  value: PGAdminSuperSecret
+  description: "Root Password for pgadmin"
+  clusterResources: ''
+  regex: []
+- path: persistentVolume.storageClass
+  value: ""
+  description: "Persistent Storage for Postgres"
+  clusterResources: 'k8s-storage-class'
+  regex: []
+- path: persistentVolume.size
+  value: "10Gi"
+  description: "Persistent Storage Disk Size"
+  clusterResources: ''
+  regex: []
