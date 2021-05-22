@@ -19,12 +19,12 @@ defaultValueArray:
   description: Custom Database password
   clusterResources: ''
   regex: []
-- path: persistence.storageClass
+- path: global.storageClass
   value: ''
   description: MySQL Persistent Storage Disk
   clusterResources: 'k8s-storage-class'
   regex: []
-- path: persistence.size
+- path: primary.persistence.size
   value: '10Gi'
   description: MySQL Storage Disk Size
   clusterResources: ''
