@@ -1,0 +1,11 @@
+defaultValueArray:
+- path: controller.kind
+  value: deployment
+  description: 'for production use, it is recommended to use daemonset'
+  clusterResources: ''
+  regex: []
+- path: controller.service.type
+  value: LoadBalancer
+  description: "For On premises, if you don't have a LB service configured, please use NodePort"
+  clusterResources: ''
+  regex: []
